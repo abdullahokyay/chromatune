@@ -30,6 +30,15 @@ def renk_sicakligi(img):
     sicak = ((ton <= 25) | (ton >= 160)).sum()
     soguk = ((ton >= 90) & (ton <= 130)).sum()
     return (sicak - soguk) / len(ton)
+def kontrast(img):
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    return hsv[:, :, 2].std() / 128
+
+def canli_oran(img):
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    s = hsv[:, :, 1]
+    v = hsv[:, :, 2]
+    return ((s > 128) & (v > 100)).mean()
 
 if __name__ == "__main__":
     img = oku(sys.argv[1])
