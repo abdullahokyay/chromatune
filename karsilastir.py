@@ -22,5 +22,6 @@ for ad in sorted(os.listdir("images")):
         "energy_eski": round(e_eski, 2),
         "energy_yeni": round(yeni_enerji(img), 2),
     })
-
-print(pd.DataFrame(satirlar).to_string(index=False))
+tablo = pd.DataFrame(satirlar)
+tablo.to_csv("data/karsilastirma.csv", index=False)
+print(tablo.to_string(index=False))

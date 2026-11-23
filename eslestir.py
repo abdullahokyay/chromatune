@@ -2,21 +2,21 @@ import sys
 import numpy as np
 import pandas as pd
 from sklearn.neighbors import NearestNeighbors
-from ozellikler import oku, parlaklik_doygunluk, kenar_yogunlugu, renk_sicakligi
+from ozellikler import oku, parlaklik_doygunluk, kenar_yogunlugu, renk_sicakligi, kontrast, canli_oran
 
 def sinirla(x):
     return float(np.clip(x, 0, 1))
 
 def gorselden_muzige(img):
     doygunluk, parlaklik = parlaklik_doygunluk(img)
-    kenar = kenar_yogunlugu(img)
     sicaklik = renk_sicakligi(img)
     p = sinirla((parlaklik - 0.2) / 0.6)
     d = sinirla(doygunluk)
-    k = sinirla(kenar / 0.07)
     s = sinirla((sicaklik + 1) / 2)
+    kon = sinirla((kontrast(img) - 0.3) / 0.3)
+    canli = sinirla(canli_oran(img) / 0.5)
     valence = 0.4 * p + 0.3 * d + 0.3 * s
-    energy = 0.5 * k + 0.5 * d
+    energy = 0.4 * kon + 0.3 * d + 0.3 * canli
     return valence, energy
 
 def oneri(img, sarkilar, model, n=5):
